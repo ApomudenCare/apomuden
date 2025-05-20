@@ -23,7 +23,7 @@ const NavBar = () => {
 			<div className="flex gap-5">
 				<div className="border border-gray-200 flex items-center px-3 py-1 gap-2 rounded-md">
 					<CiGlobe />
-					<p>English</p>
+					<p>Twi</p>
 				</div>
 				<div className="items-center flex"> 
 					<p>
