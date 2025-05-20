@@ -31,7 +31,7 @@ const NavBar = () => {
 					</p>
 				</div>
 				<button>Emergency</button>
-				<p>KA</p>
+				<p>ASK</p>
 			</div>
 		</section>
 	);
