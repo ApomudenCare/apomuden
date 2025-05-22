@@ -1,26 +1,27 @@
 import { CgDanger } from "react-icons/cg";
 import { CiHome, CiStethoscope, CiUser } from "react-icons/ci";
-import { FaUser} from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
 const navigation = [
-	
 	{
 		name: "Home",
 		icon: CiHome,
-		path: '/'
+		path: "/",
 	},
 	{
 		name: "Patient",
 		icon: CiUser,
-		path: '/patient'
+		path: "/patient",
 	},
 	{
 		name: "HealthCare Worker",
 		icon: CiStethoscope,
+		path: "/healthcareworker",
 	},
 	{
 		name: "Emergency",
 		icon: CgDanger,
+		path: "/emergency",
 	},
 ];
 

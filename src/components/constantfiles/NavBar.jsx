@@ -8,7 +8,7 @@ import { Link } from "react-router";
 
 const NavBar = () => {
 	return (
-		<section className="border border-b-gray-300 p-4 flex justify-between items-center fixed top-0 right-0 left-0 bg-white/60 shadow-md backdrop-blur-md ">
+		<section className="border border-b-gray-300 p-4 flex justify-between items-center fixed top-0 right-0 left-0 bg-white/60 shadow-md backdrop-blur-md z-50">
 			<div className="flex gap-10 items-center">
 				<div className="text-[#3f9669] font-semibold">Apomuden Care</div>
 				<ul className="flex items-center gap-5">
