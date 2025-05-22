@@ -283,7 +283,7 @@ const Emergency = () => {
                   {selectedBodyPart}: {selectedSymptoms.join(", ") || "None"}
                 </p>
               </div>
-
+                    {/*work on the modal for the submit*/}
               {/* Submit Button */}
               <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded font-semibold transition-colors">
                 Submit Symptoms
