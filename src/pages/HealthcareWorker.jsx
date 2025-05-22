@@ -11,7 +11,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-// Import tab components
+
 import PatientsTab from '../pages/Tabs/PatientsTab';
 import RecordsTab from '../pages/Tabs/RecordsTab';
 import CommunicationsTab from '../pages/Tabs/CommunicationsTab';
