@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import HealthcareWorker from "./pages/HealthcareWorker";
 
 import PatientDashboard from "./pages/PatientDashboard";
+import Emergency from "./pages/Emergency";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
 					<Route path="/" element={<HomePage />} />
 
 					<Route path="/healthcareworker" element={<HealthcareWorker/>}/>
+					<Route path="/emergency" element={<Emergency/>}/>
 
 					<Route path="/patient" element={<PatientDashboard />} />
 
