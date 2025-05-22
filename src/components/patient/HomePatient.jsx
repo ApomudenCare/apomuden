@@ -1,5 +1,6 @@
 import React from "react";
 import { BiArrowBack } from "react-icons/bi";
+import { GrEmergency } from "react-icons/gr";
 import { Link } from "react-router";
 
 const HomePatient = () => {
@@ -14,6 +15,14 @@ const HomePatient = () => {
 					<BiArrowBack />
 					Back to Home
 				</Link>
+			</div>
+
+			<div>
+				<h1>Apomuden Assistant</h1>
+				<button className="bg-[#ef4444] flex text-white items-center px-3 py-1 rounded-md">
+					<GrEmergency />
+					Emergency
+				</button>
 			</div>
 		</section>
 	);
