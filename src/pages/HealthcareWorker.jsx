@@ -16,6 +16,7 @@ import RecordsTab from "../pages/Tabs/RecordsTab";
 import CommunicationsTab from "../pages/Tabs/CommunicationsTab";
 import AlertsTab from "../pages/Tabs/AlertsTab";
 import PagesLayout from "../layouts/PagesLayout";
+import { Link } from "react-router";
 
 function HealthcareWorker() {
 	const [selectedPatient, setSelectedPatient] = useState(null);
@@ -270,10 +271,10 @@ function HealthcareWorker() {
 					{/* Header */}
 					<div className="flex justify-between items-center mb-4">
 						<h1 className="text-2xl font-bold text-gray-900">Healthcare Worker Interface</h1>
-						<button className="flex items-center text-sm text-blue-600 hover:text-blue-800 border border-gray-200 rounded-md px-3 py-1">
+						<Link to={'/'} className="flex items-center text-sm text-blue-600 hover:text-blue-800 border border-gray-200 rounded-md px-3 py-1 cursor-pointer">
 							<ArrowLeft className="w-4 h-4 mr-1" />
 							Back to Home
-						</button>
+						</Link>
 					</div>
 
 					{/* Dashboard Header */}
