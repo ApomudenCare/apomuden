@@ -11,7 +11,7 @@ import Medication from "./Medication";
 const HomePatient = () => {
 	const [activeTab, setActiveTab] = useState("Assistant");
 	return (
-		<section className="h-screen mt-[8%] px-5 space-y-5">
+		<section className=" mt-[8%] px-5 space-y-5">
 			<div className="flex justify-between items-center">
 				<h1 className="text-4xl font-semibold">Patient Interface</h1>
 				<Link
