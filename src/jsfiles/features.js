@@ -1,5 +1,11 @@
-import { FiMessageSquare } from "react-icons/fi";
+import { FaRegUserCircle, FaStethoscope } from "react-icons/fa";
+import { FiBarChart2, FiMessageSquare } from "react-icons/fi";
+import { GrAlert } from "react-icons/gr";
+import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
+import { IoPulseSharp, IoWifiSharp } from "react-icons/io5";
+import { LuBrainCircuit } from "react-icons/lu";
 import { RiGlobalLine } from "react-icons/ri";
+import { TbPill } from "react-icons/tb";
 
 const keyfeatures = [
 	{
@@ -13,52 +19,52 @@ const keyfeatures = [
 		text: "Enter symptoms via text, voice, or visual selection for clear communication.",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: IoPulseSharp,
 		feature: "Visual Triage Interface",
 		text: "Icon-driven symptom reporting for easy communication without words.",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: LuBrainCircuit,
 		feature: "AI-Driven Medical Queries",
 		text: "Smart follow-up questions based on symptoms to improve diagnosis accuracy.",
 	},
 	{
-		icon: RiGlobalLine,
+		icon: GrAlert,
 		feature: "Emergency Alert System",
 		text: "Instant alerts to medical staff with patient condition information.",
 	},
 	{
-		icon: RiGlobalLine,
+		icon: TbPill,
 		feature: "Medication Understanding",
 		text: "Get medication instructions and side effects in your preferred language.",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: FiBarChart2,
 		feature: "Patient History Log",
 		text: "rack symptoms and treatments over time for better healthcare outcomes.",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: FaStethoscope,
 		feature: "Health Worker mode",
 		text: "Simplified interface for medical staff to view patient information.",
 	},
 	{
-		icon: RiGlobalLine,
+		icon: IoWifiSharp,
 		feature: "Offline Mode",
 		text: "Use the app without internet connection in remote areas.",
 	},
 	{
-		icon: RiGlobalLine,
+		icon: FaRegUserCircle,
 		feature: "User Profiles",
 		text: "Store medical information and preferences for personalized care",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: HiOutlineSpeakerXMark,
 		feature: "Voice for the Voiceless",
 		text: "Empowering those with speech disabilities to communicate effectively.",
 	},
 	{
-		icon: FiMessageSquare,
+		icon: HiOutlineSpeakerWave,
 		feature: "Apomuden Assistant",
 		text: "AI-powered health companion in your local language.",
 	},

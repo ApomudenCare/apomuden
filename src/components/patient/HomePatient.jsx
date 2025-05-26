@@ -31,15 +31,17 @@ const HomePatient = () => {
 				</button>
 			</div>
 
-			<div className="flex justify-between items-center bg-gray-200 py-3 px-3 ">
+			<div className="flex justify-between items-center bg-[#f4f4f5] py-3 px-3 ">
 				{patientnav.map((item) => (
 					<div
 						key={item.id}
 						onClick={() => setActiveTab(item.id)}
-						className="flex gap-x-2 items-center cursor-pointer"
+						className={`flex justify-center gap-x-2 items-center cursor-pointer ${
+							activeTab === item.id ? "bg-white text-black px-4 py-1" : "text-[#71717a]"
+						}`}
 					>
 						<item.icon />
-						{item.text}
+						<p className={`${activeTab === item.id ? "text-black" : "text-[#71717a]"}`}>{item.text}</p>
 					</div>
 				))}
 			</div>

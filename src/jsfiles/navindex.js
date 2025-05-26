@@ -1,6 +1,5 @@
-import { CgDanger } from "react-icons/cg";
-import { CiHome, CiStethoscope, CiUser } from "react-icons/ci";
-import { FaUser } from "react-icons/fa";
+import { FaStethoscope } from "react-icons/fa";
+import { FiAlertTriangle, FiUser } from "react-icons/fi";
 import { HiOutlineHome } from "react-icons/hi";
 
 const navigation = [
@@ -11,17 +10,17 @@ const navigation = [
 	},
 	{
 		name: "Patient",
-		icon: CiUser,
+		icon: FiUser,
 		path: "/patient",
 	},
 	{
 		name: "HealthCare Worker",
-		icon: CiStethoscope,
+		icon: FaStethoscope,
 		path: "/healthcareworker",
 	},
 	{
 		name: "Emergency",
-		icon: CgDanger,
+		icon: FiAlertTriangle,
 		path: "/emergency",
 	},
 ];
