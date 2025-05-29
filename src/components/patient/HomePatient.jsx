@@ -36,8 +36,8 @@ const HomePatient = () => {
 					<div
 						key={item.id}
 						onClick={() => setActiveTab(item.id)}
-						className={`flex justify-center gap-x-2 items-center cursor-pointer ${
-							activeTab === item.id ? "bg-white text-black px-4 py-1" : "text-[#71717a]"
+						className={`flex justify-center gap-x-2 items-center cursor-pointer w-full ${
+							activeTab === item.id ? "bg-white text-black  py-1" : "text-[#71717a]"
 						}`}
 					>
 						<item.icon />

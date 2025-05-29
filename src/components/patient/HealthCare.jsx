@@ -29,6 +29,7 @@ const HealthCare = () => {
 				return "text-gray-400";
 		}
 	};
+
 	return (
 		<section className="border border-gray-200 rounded-md overflow-hidden ">
 			<div className="px-4 py-2 border-b border-gray-200">

@@ -11,14 +11,18 @@ const Hero = () => {
 					providers in local languages.
 				</p>
 
-        <div className="space-y-5 md:flex gap-x-5 ">
-          <button className="bg-[#3f9669] text-white px-4 py-1 rounded-md">Patience Interface</button>
-          <button className="bg-white border border-gray-200 px-4 py-1 rounded-md ">Health Worker Interface</button>
-        </div>
+				<div className="flex gap-x-5 ">
+					<button className="bg-[#3f9669]  px-4 py-1 text-white rounded-md">
+						Patience Interface
+					</button>
+					<button className="bg-white border border-gray-200 px-4 py-1 rounded-md ">
+						Health Worker Interface
+					</button>
+				</div>
 			</div>
-			<div className="border border-gray-500 rounded-md">
-        <p>Image</p>
-      </div>
+			{/* <div className="border border-gray-500 rounded-md">
+				<p>Image</p>
+			</div> */}
 		</section>
 	);
 };
