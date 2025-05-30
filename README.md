@@ -1,12 +1,23 @@
-# React + Vite
+Here’s a polished and clear update you can add to your README for your judges:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+### 🔧 Upcoming Features & Weekend Development Plan
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Over the weekend and into Monday, our team (ApomudenCare) will be working on the following key features:
 
-## Expanding the ESLint configuration
+* **AI Chatbot Integration:**
+  We will integrate the Ghana NLP API to power our AI chatbot for smarter and more localized user interactions.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Private Chat with a Doctor:**
+  Implementation of a secure, real-time private chat feature between users and certified doctors.
+
+* **Emergency Services Access:**
+  Development of a section for users to quickly access emergency contacts and resources.
+
+* **User Authentication:**
+  Integration of login and signup pages to enable secure access and personalized user experiences.
+
+These features are scheduled to be developed and tested over the weekend (Saturday–Monday) in preparation for our next demo.
+
+
