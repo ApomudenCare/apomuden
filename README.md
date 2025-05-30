@@ -1,7 +1,3 @@
-Here’s a polished and clear update you can add to your README for your judges:
-
----
-
 ### 🔧 Upcoming Features & Weekend Development Plan
 
 Over the weekend and into Monday, our team (ApomudenCare) will be working on the following key features:
