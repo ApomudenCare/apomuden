@@ -80,7 +80,7 @@ const Emergency = () => {
     }
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&countrycodes=gh` // Limit to Ghana
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&countrycodes=gh` 
       );
       const data = await response.json();
       if (data && data.length > 0) {
@@ -545,7 +545,7 @@ const Emergency = () => {
           </div>
         );
 
-      case 4: // Review & Submit
+      case 4: 
         return (
           <div className="space-y-4 p-6 border rounded-lg bg-red-50">
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">

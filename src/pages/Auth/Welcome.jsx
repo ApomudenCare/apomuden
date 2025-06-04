@@ -6,7 +6,7 @@ const Welcome = () => {
   const videoRef = useRef(null);
   
   useEffect(() => {
-    // Autoplay the video when component mounts
+    
     if (videoRef.current) {
       videoRef.current.play().catch(error => {
         console.error("Video autoplay failed:", error);
