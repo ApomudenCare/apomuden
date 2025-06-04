@@ -1,5 +1,5 @@
 import React from "react";
-
+import heRo from '../../assets/images/herobg.mp4'
 const Hero = () => {
 	return (
 		<section className="relative pt-20 min-h-screen flex items-center justify-center overflow-hidden">
@@ -13,7 +13,7 @@ const Hero = () => {
 					playsInline
 				>
 					<source
-						src="../../assets/images/herobg.mp4"
+						src={heRo}
 						type="video/mp4"
 					/>
 					Your browser does not support the video tag.
