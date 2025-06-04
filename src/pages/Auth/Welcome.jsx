@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useEffect, useRef } from "react";
-import WelcomeBg from '../../assets/images/welcome.mp4'
+import welCome_ from '../../assets/images/Welcome_.mp4'
 
 const Welcome = () => {
   const videoRef = useRef(null);
@@ -23,7 +23,7 @@ const Welcome = () => {
               muted
               className="absolute top-0 left-0 min-w-full min-h-full w-auto h-auto object-cover z-0"
             >
-              <source src={WelcomeBg} type="video/mp4" />
+              <source src={welCome_} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
       
