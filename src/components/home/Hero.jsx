@@ -1,5 +1,6 @@
 import React from "react";
 import heRo from '../../assets/images/herobg.mp4'
+import { Link } from "react-router";
 const Hero = () => {
 	return (
 		<section className="relative pt-20 min-h-screen flex items-center justify-center overflow-hidden">
@@ -37,12 +38,12 @@ const Hero = () => {
 					</p>
 
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<button className="bg-[#3f9669] hover:bg-[#2d7a56] hover:scale-105 hover:shadow-xl transition-all duration-300 transform px-8 py-3 text-white rounded-lg font-medium shadow-lg">
+						<Link to='/patient' className="bg-[#3f9669] hover:bg-[#2d7a56] hover:scale-105 hover:shadow-xl transition-all duration-300 transform px-8 py-3 text-white rounded-lg font-medium shadow-lg">
 							Patient Interface
-						</button>
-						<button className="bg-white hover:bg-gray-100 hover:scale-105 hover:shadow-xl transition-all duration-300 transform border border-gray-200 px-8 py-3 text-gray-800 rounded-lg font-medium shadow-lg">
+						</Link>
+						<Link to='/healthcareworker' className="bg-white hover:bg-gray-100 hover:scale-105 hover:shadow-xl transition-all duration-300 transform border border-gray-200 px-8 py-3 text-gray-800 rounded-lg font-medium shadow-lg">
 							Health Worker Interface
-						</button>
+						</Link>
 					</div>
 				</div>
 			</div>
