@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import navigation from "../../jsfiles/navindex";
 import { CiGlobe } from "react-icons/ci";
 import { TiWeatherSunny } from "react-icons/ti";
-import Dropdown from "../Dropdown";
+// import Dropdown from "../Dropdown";
 import Mode from "../Mode";
 import { NavLink } from "react-router";
 import { Menu, X } from "lucide-react";
@@ -11,7 +11,11 @@ const NavBar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<section className={`border border-b-gray-300 p-4 items-center fixed top-0 right-0 left-0 bg-white/60 backdrop-blur-md z-50 ${isOpen ? "h-screen" : "h-auto"}`}>
+		<section
+			className={`border border-b-gray-300 p-4 items-center fixed top-0 right-0 left-0 bg-white/60 backdrop-blur-md z-50 ${
+				isOpen ? "h-screen" : "h-auto"
+			}`}
+		>
 			<div className="flex justify-between items-center">
 				<div className=" text-[#3f9669] font-semibold">ApomudenCare</div>
 				<ul className="hidden justify-end md:flex gap-x-5">
@@ -30,7 +34,7 @@ const NavBar = () => {
 						</NavLink>
 					))}
 					<div className="flex gap-5 items-center">
-						<Dropdown />
+						{/* <Dropdown onLanguagechange={(lang) => console.log("Selected", lang)} /> */}
 						<div className="items-center flex border border-gray-300 px-2 py-1 rounded-md">
 							<p>
 								<Mode />

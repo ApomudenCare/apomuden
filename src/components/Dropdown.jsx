@@ -1,16 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import { CiGlobe } from "react-icons/ci";
 
-const Dropdown = () => {
+const Dropdown = ({ onLanguagechange }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedLanguage, setSelectedLanguage] = useState("English");
-	const languages = ["English", "Twi", "Ga", "Ewe"];
+	const languages = [
+		{ label: "English", code: "en" },
+		{ label: "Twi", code: "ak" },
+		{ label: "Ga", code: "gaa" },
+		{ label: "Ewe", code: "ewe" },
+	];
 
 	const toggleFunction = () => setIsOpen(!isOpen);
 
 	const handleSelect = (lang) => {
-		setSelectedLanguage(lang);
+		setSelectedLanguage(lang.label);
 		setIsOpen(false);
+		if (onLanguagechange) {
+			onLanguagechange(lang); // Pass the entire lang object instead of lang.code
+		}
 	};
 
 	const dropdownRef = useRef(null);
@@ -24,8 +32,9 @@ const Dropdown = () => {
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
+
 	return (
-		<div ref={dropdownRef}>
+		<div ref={dropdownRef} className="relative">
 			<button
 				onClick={toggleFunction}
 				className="border border-gray-200 bg-[#f9fafb] px-4 py-1 rounded-md flex items-center gap-x-2"
@@ -39,11 +48,11 @@ const Dropdown = () => {
 					<div>
 						{languages.map((lang) => (
 							<button
-								key={lang}
+								key={lang.code}
 								onClick={() => handleSelect(lang)}
 								className="flex flex-col w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
 							>
-								{lang}
+								{lang.label}
 							</button>
 						))}
 					</div>
@@ -52,4 +61,5 @@ const Dropdown = () => {
 		</div>
 	);
 };
+
 export default Dropdown;
