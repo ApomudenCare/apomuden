@@ -1,6 +1,10 @@
-import { Search, User, Heart, Thermometer, Activity, Wind } from "lucide-react";
+import { useState } from "react";
+import { Search, User, Heart, Thermometer, Activity, Wind, ArrowLeft, ChevronDown } from "lucide-react";
 
 function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
+  const [showPatientList, setShowPatientList] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const getStatusBadgeClass = (status) => {
     switch (status) {
       case "Stable": return "bg-green-100 text-green-800";
@@ -165,6 +169,13 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
     }
   ];
 
+  // Filter patients based on search term
+  const filteredPatients = (patients || enhancedPatients).filter(patient =>
+    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    patient.condition.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    patient.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Find selected patient data from enhanced data or create default data
   const selectedPatientData = enhancedPatients.find(p => p.id === selectedPatient) || 
     (selectedPatient ? {
@@ -187,109 +198,147 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
       allergies: ["None known"]
     } : null);
 
-  const getVitalStatusColor = (status) => {
-    switch (status) {
-      case "normal": return "bg-green-400";
-      case "elevated": return "bg-yellow-400";
-      case "high": return "bg-red-400";
-      default: return "bg-gray-400";
-    }
+  const handlePatientSelect = (patientId) => {
+    setSelectedPatient(patientId);
+    setShowPatientList(false); // Hide list on mobile after selection
   };
 
-  const getVitalStatusWidth = (value, max) => {
-    return `${Math.min((value / max) * 100, 100)}%`;
+  const handleBackToList = () => {
+    setShowPatientList(true);
+    setSelectedPatient(null);
   };
 
   return (
-    <div className="flex space-x-6">
-      {/* Patient List */}
-      <div className="w-1/3 bg-white border border-gray-200 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">Patient List</h3>
-        <p className="text-sm text-gray-500 mb-4">Select a patient to view their details</p>
+    <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0">
+      {/* Patient List - Full width on mobile, 1/3 on desktop */}
+      <div className={`w-full lg:w-1/3 bg-white border border-gray-200 rounded-lg p-3 sm:p-4 ${
+        !showPatientList && selectedPatient ? 'hidden lg:block' : ''
+      }`}>
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Patient List</h3>
+            <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">Select a patient to view their details</p>
+          </div>
+          <div className="lg:hidden">
+            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+              {filteredPatients.length} patients
+            </span>
+          </div>
+        </div>
 
-        <div className="relative mb-4">
+        <div className="relative mb-3 sm:mb-4">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="text"
             placeholder="Filter patients..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9 pr-4 py-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 w-full text-sm"
           />
         </div>
 
         {/* Scrollable patient list */}
-        <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
-          {(patients || enhancedPatients).map((patient) => (
+        <div className="space-y-2 max-h-[400px] sm:max-h-[500px] overflow-y-auto">
+          {filteredPatients.map((patient) => (
             <div
               key={patient.id}
-              className={`flex items-center px-3 py-3 rounded-md cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition-colors ${
+              className={`flex items-center px-3 py-3 rounded-md cursor-pointer border border-gray-100 hover:bg-gray-50 transition-colors active:bg-gray-100 ${
                 selectedPatient === patient.id ? "bg-blue-50 border-blue-200" : ""
               }`}
-              onClick={() => setSelectedPatient(patient.id)}
+              onClick={() => handlePatientSelect(patient.id)}
             >
-              <div className="flex-shrink-0 h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center">
-                <User className="h-4 w-4 text-gray-500" />
+              <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-gray-200 rounded-full flex items-center justify-center">
+                <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
               </div>
-              <div className="ml-3 flex-1">
-                <div className="flex justify-between">
-                  <h4 className="text-sm font-medium text-gray-900">{patient.name}</h4>
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getStatusBadgeClass(patient.status)}`}>
+              <div className="ml-3 flex-1 min-w-0">
+                <div className="flex justify-between items-start mb-1">
+                  <h4 className="text-sm sm:text-base font-medium text-gray-900 truncate pr-2">
+                    {patient.name}
+                  </h4>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 ${getStatusBadgeClass(patient.status)}`}>
                     {patient.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600">{patient.age}, {patient.gender}</p>
-                <p className="text-sm font-medium text-gray-800">{patient.condition}</p>
-                <p className="text-xs text-gray-400">Updated {patient.lastUpdated}</p>
+                <p className="text-xs sm:text-sm text-gray-600">
+                  {patient.age}, {patient.gender}
+                </p>
+                <p className="text-xs sm:text-sm font-medium text-gray-800 truncate">
+                  {patient.condition}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Updated {patient.lastUpdated}
+                </p>
               </div>
             </div>
           ))}
+          
+          {filteredPatients.length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-sm">No patients found matching your search.</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Patient Details */}
-      <div className="w-2/3 bg-white border border-gray-200 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">Patient Details</h3>
-        <p className="text-sm text-gray-500 mb-4">View and manage patient information</p>
+      {/* Patient Details - Full width on mobile, 2/3 on desktop */}
+      <div className={`w-full lg:w-2/3 bg-white border border-gray-200 rounded-lg p-3 sm:p-4 ${
+        showPatientList && !selectedPatient ? 'hidden lg:block' : ''
+      }`}>
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center">
+            <button
+              onClick={handleBackToList}
+              className="mr-3 p-1 text-gray-500 hover:text-gray-700 lg:hidden"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Patient Details</h3>
+              <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">View and manage patient information</p>
+            </div>
+          </div>
+        </div>
 
         {selectedPatientData ? (
-          <div className="space-y-6">
-            {/* Patient Info and Vital Signs Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4 sm:space-y-6">
+            {/* Patient Info and Symptoms Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Patient Information */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center mb-3">
-                  <User className="h-5 w-5 text-blue-600 mr-2" />
-                  <h4 className="text-lg font-semibold text-gray-900">Patient Information</h4>
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mr-2" />
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-900">Patient Information</h4>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Name:</span>
-                    <span className="text-sm text-gray-900">{selectedPatientData.name}</span>
+                    <span className="text-sm text-gray-900 font-medium">{selectedPatientData.name}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Age:</span>
                     <span className="text-sm text-gray-900">{selectedPatientData.age} years</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Gender:</span>
                     <span className="text-sm text-blue-600 font-medium">{selectedPatientData.gender}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Condition:</span>
-                    <span className="text-sm text-gray-900">{selectedPatientData.condition}</span>
+                    <span className="text-sm text-gray-900 font-medium">{selectedPatientData.condition}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Status:</span>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${getStatusBadgeClass(selectedPatientData.status)}`}>
                       {selectedPatientData.status}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Last Visit:</span>
                     <span className="text-sm text-gray-900">{selectedPatientData.lastVisit}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-gray-600">Next Appointment:</span>
                     <span className="text-sm text-gray-900">{selectedPatientData.nextAppointment}</span>
                   </div>
@@ -297,17 +346,17 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
               </div>
 
               {/* Symptoms & Complaints */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center mb-3">
-                  <Activity className="h-5 w-5 text-red-600 mr-2" />
-                  <h4 className="text-lg font-semibold text-gray-900">Symptoms & Complaints</h4>
+                  <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 mr-2" />
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-900">Symptoms</h4>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {selectedPatientData.symptoms && selectedPatientData.symptoms.length > 0 ? (
                     selectedPatientData.symptoms.map((symptom, index) => (
                       <div key={index} className="flex items-start">
-                        <div className="w-2 h-2 rounded-full bg-red-500 mr-3 mt-2 flex-shrink-0"></div>
-                        <div className="flex-1">
+                        <div className="w-2 h-2 rounded-full bg-red-500 mr-2 sm:mr-3 mt-2 flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900">{symptom}</p>
                           <p className="text-xs text-gray-500 mt-1">
                             {index === 0 ? "Primary complaint" : 
@@ -315,7 +364,7 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
                              "Additional symptom"}
                           </p>
                         </div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        <div className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
                           index === 0 ? "bg-red-100 text-red-800" :
                           index === 1 ? "bg-orange-100 text-orange-800" :
                           "bg-yellow-100 text-yellow-800"
@@ -335,9 +384,9 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
                 </div>
                 
                 {/* Chief Complaint Section */}
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
                   <h5 className="text-sm font-semibold text-gray-700 mb-2">Chief Complaint:</h5>
-                  <p className="text-sm text-gray-900 bg-white p-3 rounded border-l-4 border-red-500">
+                  <p className="text-sm text-gray-900 bg-white p-2 sm:p-3 rounded border-l-4 border-red-500">
                     {selectedPatientData.condition || "General consultation"}
                   </p>
                 </div>
@@ -345,56 +394,62 @@ function PatientsTab({ patients, selectedPatient, setSelectedPatient }) {
             </div>
 
             {/* Clinical Notes */}
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
               <div className="flex items-center mb-3">
-                <div className="w-5 h-5 bg-green-100 rounded mr-2 flex items-center justify-center">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded mr-2 flex items-center justify-center">
                   <div className="w-2 h-2 bg-green-600 rounded"></div>
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900">Clinical Notes</h4>
+                <h4 className="text-base sm:text-lg font-semibold text-gray-900">Clinical Notes</h4>
               </div>
               <p className="text-sm text-gray-700 leading-relaxed">{selectedPatientData.clinicalNotes}</p>
             </div>
 
             {/* Additional Information Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {/* Symptoms */}
-              <div className="bg-red-50 rounded-lg p-4">
+              <div className="bg-red-50 rounded-lg p-3 sm:p-4">
                 <h5 className="text-sm font-semibold text-red-800 mb-2">Current Symptoms</h5>
                 <ul className="space-y-1">
                   {selectedPatientData.symptoms.map((symptom, index) => (
-                    <li key={index} className="text-sm text-red-700">• {symptom}</li>
+                    <li key={index} className="text-sm text-red-700 break-words">• {symptom}</li>
                   ))}
                 </ul>
               </div>
 
               {/* Medications */}
-              <div className="bg-blue-50 rounded-lg p-4">
+              <div className="bg-blue-50 rounded-lg p-3 sm:p-4">
                 <h5 className="text-sm font-semibold text-blue-800 mb-2">Current Medications</h5>
                 <ul className="space-y-1">
                   {selectedPatientData.medications.map((medication, index) => (
-                    <li key={index} className="text-sm text-blue-700">• {medication}</li>
+                    <li key={index} className="text-sm text-blue-700 break-words">• {medication}</li>
                   ))}
                 </ul>
               </div>
 
               {/* Allergies */}
-              <div className="bg-yellow-50 rounded-lg p-4">
+              <div className="bg-yellow-50 rounded-lg p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
                 <h5 className="text-sm font-semibold text-yellow-800 mb-2">Known Allergies</h5>
                 <ul className="space-y-1">
                   {selectedPatientData.allergies.map((allergy, index) => (
-                    <li key={index} className="text-sm text-yellow-700">• {allergy}</li>
+                    <li key={index} className="text-sm text-yellow-700 break-words">• {allergy}</li>
                   ))}
                 </ul>
               </div>
             </div>
           </div>
         ) : (
-          <div className="h-64 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-              <User className="h-8 w-8 text-gray-400" />
+          <div className="h-48 sm:h-64 flex flex-col items-center justify-center text-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+              <User className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400" />
             </div>
-            <h4 className="text-lg font-medium text-gray-900 mb-2">No Patient Selected</h4>
+            <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No Patient Selected</h4>
             <p className="text-sm text-gray-500">Select a patient from the list to view their details</p>
+            <button
+              onClick={() => setShowPatientList(true)}
+              className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 lg:hidden"
+            >
+              View Patient List
+            </button>
           </div>
         )}
       </div>

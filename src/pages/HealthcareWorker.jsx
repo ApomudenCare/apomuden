@@ -9,6 +9,8 @@ import {
 	UserCircle,
 	ClipboardList,
 	MessageSquare,
+	Menu,
+	X,
 } from "lucide-react";
 
 import PatientsTab from "../pages/Tabs/PatientsTab";
@@ -21,6 +23,8 @@ import { Link } from "react-router";
 function HealthcareWorker() {
 	const [selectedPatient, setSelectedPatient] = useState(null);
 	const [activeTab, setActiveTab] = useState("patients");
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const [isSearchOpen, setIsSearchOpen] = useState(false);
 
 	// Sample data - you might want to move this to a separate data file or context
 	const patients = [
@@ -221,14 +225,14 @@ function HealthcareWorker() {
 	];
 
 	const tabs = [
-		{ id: "patients", label: "Patients", icon: <UserCircle className="w-5 h-5 mr-2" /> },
-		{ id: "records", label: "Records", icon: <ClipboardList className="w-5 h-5 mr-2" /> },
+		{ id: "patients", label: "Patients", icon: <UserCircle className="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2" /> },
+		{ id: "records", label: "Records", icon: <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2" /> },
 		{
 			id: "communications",
 			label: "Communications",
-			icon: <MessageSquare className="w-5 h-5 mr-2" />,
+			icon: <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2" />,
 		},
-		{ id: "alerts", label: "Alerts", icon: <Bell className="w-5 h-5 mr-2" /> },
+		{ id: "alerts", label: "Alerts", icon: <Bell className="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2" /> },
 	];
 
 	const renderTabContent = () => {
@@ -266,26 +270,35 @@ function HealthcareWorker() {
 
 	return (
 		<PagesLayout>
-			<div className="min-h-screen  mt-[5%]">
-				<div className="max-w-7xl mx-auto px-6 py-4">
+			<div className="min-h-screen mt-[5%]">
+				<div className="max-w-7xl mx-auto px-3 sm:px-6 py-4">
 					{/* Header */}
 					<div className="flex justify-between items-center mb-4">
-						<h1 className="text-2xl font-bold text-gray-900">Healthcare Worker Interface</h1>
-						<Link to={'/'} className="flex items-center text-sm text-blue-600 hover:text-blue-800 border border-gray-200 rounded-md px-3 py-1 cursor-pointer">
-							<ArrowLeft className="w-4 h-4 mr-1" />
-							Back to Home
+						<h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">
+							<span className="hidden sm:inline">Healthcare Worker Interface</span>
+							<span className="sm:hidden">Healthcare</span>
+						</h1>
+						<Link to={'/'} className="flex items-center text-xs sm:text-sm text-blue-600 hover:text-blue-800 border border-gray-200 rounded-md px-2 sm:px-3 py-1 cursor-pointer whitespace-nowrap">
+							<ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+							<span className="hidden sm:inline">Back to Home</span>
+							<span className="sm:hidden">Back</span>
 						</Link>
 					</div>
 
 					{/* Dashboard Header */}
-					<div className="flex justify-between items-center mb-6">
+					<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
 						<div className="flex items-center">
-							<h2 className="text-xl font-bold text-gray-900 mr-3">Healthcare Worker Dashboard</h2>
-							<span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-md">
+							<h2 className="text-base sm:text-xl font-bold text-gray-900 mr-3 truncate">
+								<span className="hidden md:inline">Healthcare Worker Dashboard</span>
+								<span className="md:hidden">Dashboard</span>
+							</h2>
+							<span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-md whitespace-nowrap">
 								Staff
 							</span>
 						</div>
-						<div className="flex items-center space-x-2">
+						
+						{/* Desktop Controls */}
+						<div className="hidden lg:flex items-center space-x-2">
 							<div className="relative">
 								<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 									<Search className="h-4 w-4 text-gray-400" />
@@ -312,11 +325,75 @@ function HealthcareWorker() {
 								<Calendar className="h-5 w-5 text-gray-500" />
 							</button>
 						</div>
+
+						{/* Mobile/Tablet Controls */}
+						<div className="flex lg:hidden items-center space-x-2">
+							{/* Mobile Search Toggle */}
+							<button 
+								onClick={() => setIsSearchOpen(!isSearchOpen)}
+								className="p-2 border border-gray-200 rounded-md hover:bg-gray-50"
+							>
+								<Search className="h-4 w-4 text-gray-500" />
+							</button>
+							
+							{/* Essential buttons for mobile */}
+							<button className="p-2 border border-gray-200 rounded-md hover:bg-gray-50 relative">
+								<Bell className="h-4 w-4 text-gray-500" />
+								<span className="absolute -top-1 -right-1 flex items-center justify-center h-3 w-3 text-xs font-bold text-white bg-red-500 rounded-full">
+									2
+								</span>
+							</button>
+							
+							{/* Menu button for additional options */}
+							<button 
+								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+								className="p-2 border border-gray-200 rounded-md hover:bg-gray-50"
+							>
+								{isMobileMenuOpen ? <X className="h-4 w-4 text-gray-500" /> : <Menu className="h-4 w-4 text-gray-500" />}
+							</button>
+						</div>
 					</div>
 
+					{/* Mobile Search Bar */}
+					{isSearchOpen && (
+						<div className="lg:hidden mb-4">
+							<div className="relative">
+								<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+									<Search className="h-4 w-4 text-gray-400" />
+								</div>
+								<input
+									type="text"
+									placeholder="Search patients..."
+									className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+								/>
+							</div>
+						</div>
+					)}
+
+					{/* Mobile Menu */}
+					{isMobileMenuOpen && (
+						<div className="lg:hidden mb-4 p-4 bg-gray-50 rounded-lg">
+							<div className="flex flex-wrap gap-2">
+								<button className="flex items-center px-3 py-2 border border-gray-200 rounded-md hover:bg-gray-50 bg-white text-sm">
+									<Filter className="h-4 w-4 text-gray-500 mr-2" />
+									Filter
+								</button>
+								<button className="flex items-center px-3 py-2 border border-gray-200 rounded-md hover:bg-gray-50 bg-white text-sm">
+									<RefreshCw className="h-4 w-4 text-gray-500 mr-2" />
+									Refresh
+								</button>
+								<button className="flex items-center px-3 py-2 border border-gray-200 rounded-md hover:bg-gray-50 bg-white text-sm">
+									<Calendar className="h-4 w-4 text-gray-500 mr-2" />
+									Calendar
+								</button>
+							</div>
+						</div>
+					)}
+
 					{/* Tabs */}
-					<div className="bg-gray-50 rounded-lg mb-6 overflow-hidden py-2 p-4">
-						<div className="flex">
+					<div className="bg-gray-50 rounded-lg mb-6 overflow-hidden py-2 p-2 sm:p-4">
+						{/* Desktop Tabs */}
+						<div className="hidden sm:flex">
 							{tabs.map((tab) => (
 								<button
 									key={tab.id}
@@ -328,14 +405,34 @@ function HealthcareWorker() {
 									}`}
 								>
 									{tab.icon}
-									{tab.label}
+									<span className="hidden sm:inline">{tab.label}</span>
+								</button>
+							))}
+						</div>
+
+						{/* Mobile Tabs - Grid Layout */}
+						<div className="grid grid-cols-2 gap-2 sm:hidden">
+							{tabs.map((tab) => (
+								<button
+									key={tab.id}
+									onClick={() => setActiveTab(tab.id)}
+									className={`rounded-lg flex flex-col items-center justify-center px-3 py-3 text-xs font-medium transition-colors ${
+										activeTab === tab.id
+											? "bg-white text-gray-900 shadow-sm"
+											: "text-gray-500 hover:text-gray-700"
+									}`}
+								>
+									{tab.icon}
+									<span className="mt-1">{tab.label}</span>
 								</button>
 							))}
 						</div>
 					</div>
 
 					{/* Main Content */}
-					{renderTabContent()}
+					<div className="overflow-x-auto">
+						{renderTabContent()}
+					</div>
 				</div>
 			</div>
 		</PagesLayout>

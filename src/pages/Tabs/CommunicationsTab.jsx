@@ -8,7 +8,8 @@ import {
   Send,
   MoreVertical,
   Paperclip,
-  Smile
+  Smile,
+  ArrowLeft
 } from "lucide-react";
 
 function CommunicationsTab({ patients, patientCommunications, selectedPatient }) {
@@ -63,11 +64,11 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
 
   const getCommunicationTypeIcon = (type) => {
     switch (type) {
-      case "Phone Call": return <Phone className="w-5 h-5 text-blue-500" />;
-      case "SMS": return <MessageSquare className="w-5 h-5 text-green-500" />;
-      case "Email": return <Mail className="w-5 h-5 text-purple-500" />;
-      case "Emergency Contact": return <AlertTriangle className="w-5 h-5 text-red-500" />;
-      default: return <MessageSquare className="w-5 h-5 text-gray-500" />;
+      case "Phone Call": return <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />;
+      case "SMS": return <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />;
+      case "Email": return <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />;
+      case "Emergency Contact": return <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />;
+      default: return <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />;
     }
   };
 
@@ -101,42 +102,50 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
   const renderChatInterface = () => (
     <div className="flex flex-col h-full">
       {/* Chat Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 bg-gray-50">
+        <div className="flex items-center min-w-0 flex-1">
+          <button 
+            onClick={() => setActiveView("history")}
+            className="mr-2 p-1 text-gray-500 hover:text-gray-700 sm:hidden"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium text-sm sm:text-base flex-shrink-0">
             {selectedPatientData?.name?.charAt(0)}
           </div>
-          <div className="ml-3">
-            <h4 className="text-sm font-medium text-gray-900">{selectedPatientData?.name}</h4>
+          <div className="ml-2 sm:ml-3 min-w-0 flex-1">
+            <h4 className="text-sm sm:text-base font-medium text-gray-900 truncate">
+              {selectedPatientData?.name}
+            </h4>
             <p className="text-xs text-green-600">Online</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+        <div className="flex items-center space-x-1 flex-shrink-0">
+          <button className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
             <Phone className="w-4 h-4" />
           </button>
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+          <button className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
             <MoreVertical className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50">
         <div className="text-center">
-          <span className="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">
+          <span className="text-xs text-gray-500 bg-white px-2 sm:px-3 py-1 rounded-full">
             Communication History
           </span>
         </div>
         
         {chatMessages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.sender === 'healthcare_worker' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+            <div className={`max-w-[85%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-lg ${
               msg.sender === 'healthcare_worker' 
                 ? 'bg-blue-500 text-white' 
                 : 'bg-white text-gray-900 border border-gray-200'
             }`}>
-              <p className="text-sm">{msg.message}</p>
+              <p className="text-sm break-words">{msg.message}</p>
               <div className={`flex items-center justify-end mt-1 space-x-1 ${
                 msg.sender === 'healthcare_worker' ? 'text-blue-100' : 'text-gray-500'
               }`}>
@@ -157,7 +166,7 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
       </div>
 
       {/* Message Input */}
-      <div className="p-4 bg-white border-t border-gray-200">
+      <div className="p-3 sm:p-4 bg-white border-t border-gray-200">
         <div className="flex items-end space-x-2">
           <div className="flex-1 relative">
             <textarea
@@ -171,10 +180,10 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
             />
           </div>
           <div className="flex items-center space-x-1">
-            <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+            <button className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded hidden sm:block">
               <Paperclip className="w-4 h-4" />
             </button>
-            <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+            <button className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded hidden sm:block">
               <Smile className="w-4 h-4" />
             </button>
             <button
@@ -196,9 +205,9 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
 
   const renderHistoryView = () => (
     <div>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h4 className="text-md font-medium text-gray-900">
+          <h4 className="text-base sm:text-lg font-medium text-gray-900">
             {selectedPatientData?.name}'s Communications
           </h4>
           <p className="text-sm text-gray-500">
@@ -208,12 +217,12 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
         <div className="flex space-x-2">
           <button 
             onClick={() => setActiveView("chat")}
-            className="bg-green-600 text-white px-3 py-1 rounded-md text-sm flex items-center hover:bg-green-700"
+            className="bg-green-600 text-white px-3 py-2 rounded-md text-sm flex items-center hover:bg-green-700 flex-1 sm:flex-none justify-center"
           >
             <MessageSquare className="w-4 h-4 mr-1" />
             Chat
           </button>
-          <button className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm flex items-center hover:bg-blue-700">
+          <button className="bg-blue-600 text-white px-3 py-2 rounded-md text-sm flex items-center hover:bg-blue-700 flex-1 sm:flex-none justify-center">
             <Phone className="w-4 h-4 mr-1" />
             Call
           </button>
@@ -225,19 +234,23 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
           ?.filter(comm => comm.patientId === selectedPatient)
           .map(comm => (
             <div key={comm.id} className="border border-gray-200 rounded-md p-3 hover:bg-gray-50 flex justify-between items-center">
-              <div className="flex items-center">
-                {getCommunicationTypeIcon(comm.type)}
-                <div className="ml-3">
-                  <h5 className="text-sm font-medium text-gray-900">{comm.title}</h5>
-                  <p className="text-xs text-gray-500">{comm.type} - {comm.date} by {comm.staff}</p>
+              <div className="flex items-center min-w-0 flex-1">
+                <div className="flex-shrink-0">
+                  {getCommunicationTypeIcon(comm.type)}
+                </div>
+                <div className="ml-3 min-w-0 flex-1">
+                  <h5 className="text-sm font-medium text-gray-900 truncate">{comm.title}</h5>
+                  <p className="text-xs text-gray-500 truncate sm:whitespace-normal">
+                    {comm.type} - {comm.date} by {comm.staff}
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center">
-                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mr-3 ${getStatusBadgeClass(comm.status)}`}>
+              <div className="flex items-center flex-shrink-0 ml-2">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mr-2 sm:mr-3 ${getStatusBadgeClass(comm.status)}`}>
                   {comm.status}
                 </span>
                 <button className="text-blue-600 hover:text-blue-800 text-sm">
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
@@ -245,10 +258,10 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
 
         {(!patientCommunications || patientCommunications.filter(comm => comm.patientId === selectedPatient).length === 0) && (
           <div className="text-center py-8">
-            <p className="text-gray-500">No communication history found for this patient.</p>
+            <p className="text-gray-500 text-sm sm:text-base">No communication history found for this patient.</p>
             <button 
               onClick={() => setActiveView("chat")}
-              className="mt-2 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700"
+              className="mt-3 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 w-full sm:w-auto"
             >
               Start New Conversation
             </button>
@@ -261,9 +274,11 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       {selectedPatient ? (
-        <div className="h-[600px] flex flex-col">
-          {/* Tab Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col">
+          {/* Tab Header - Hidden on mobile when in chat view */}
+          <div className={`flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 ${
+            activeView === "chat" ? "hidden sm:flex" : "flex"
+          }`}>
             <div className="flex space-x-1">
               <button
                 onClick={() => setActiveView("history")}
@@ -286,7 +301,9 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
                 Live Chat
               </button>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">Patient Communications</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 hidden sm:block">
+              Patient Communications
+            </h3>
           </div>
 
           {/* Content */}
@@ -296,18 +313,18 @@ function CommunicationsTab({ patients, patientCommunications, selectedPatient })
                 {renderChatInterface()}
               </div>
             ) : (
-              <div className="p-4 h-full overflow-y-auto">
+              <div className="p-3 sm:p-4 h-full overflow-y-auto">
                 {renderHistoryView()}
               </div>
             )}
           </div>
         </div>
       ) : (
-        <div className="h-64 flex flex-col items-center justify-center text-center p-4">
-          <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-            <MessageSquare className="h-8 w-8 text-gray-400" />
+        <div className="h-48 sm:h-64 flex flex-col items-center justify-center text-center p-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+            <MessageSquare className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400" />
           </div>
-          <h4 className="text-lg font-medium text-gray-900 mb-2">Patient Communications</h4>
+          <h4 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Patient Communications</h4>
           <p className="text-sm text-gray-500">Select a patient to view their communication history</p>
         </div>
       )}
