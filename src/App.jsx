@@ -8,114 +8,111 @@ import Emergency from "./pages/Emergency";
 import Welcome from "./pages/Auth/Welcome";
 
 import {
-  SignedIn,
-  SignedOut,
-  SignIn,
-  SignUp,
-  UserButton,
-  RedirectToSignIn,
+	SignedIn,
+	SignedOut,
+	SignIn,
+	SignUp,
+	UserButton,
+	RedirectToSignIn,
 } from "@clerk/clerk-react";
 
 function App() {
-  return (
-    <>
-      <header
-        style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}
-      >
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </header>
+	return (
+		<>
+			<header style={{ display: "flex", justifyContent: "flex-end", padding: "1rem" }}>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
+			</header>
 
-      <BrowserRouter>
-        <Routes>
-          {/* Show Sign-In UI if not logged in, otherwise go to HomePage */}
-          <Route
-            path="/"
-            element={
-              <>
-                <SignedIn>
-                  <HomePage />
-                </SignedIn>
-                <SignedOut>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100vh",
-                    }}
-                  >
-                    <SignIn redirectUrl="/" />
-                  </div>
-                </SignedOut>
-              </>
-            }
-          />
+			<BrowserRouter>
+				<Routes>
+					{/* Show Sign-In UI if not logged in, otherwise go to HomePage */}
+					<Route
+						path="/"
+						element={
+							<>
+								<SignedIn>
+									<HomePage />
+								</SignedIn>
+								<SignedOut>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+											alignItems: "center",
+											height: "100vh",
+										}}
+									>
+										<SignIn redirectUrl="/" />
+									</div>
+								</SignedOut>
+							</>
+						}
+					/>
 
-          {/* Optional Sign-Up route */}
-          <Route
-            path="/signup"
-            element={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100vh",
-                }}
-              >
-                <SignUp redirectUrl="/" />
-              </div>
-            }
-          />
+					{/* Optional Sign-Up route */}
+					<Route
+						path="/signup"
+						element={
+							<div
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									height: "100vh",
+								}}
+							>
+								<SignUp redirectUrl="/" />
+							</div>
+						}
+					/>
 
-          {/* Example extra pages */}
-          <Route path="/welcome" element={<Welcome />} />
-          <Route
-            path="/healthcareworker"
-            element={
-              <>
-                <SignedIn>
-                  <HealthcareWorker />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-          <Route
-            path="/emergency"
-            element={
-              <>
-                <SignedIn>
-                  <Emergency />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-          <Route
-            path="/patient"
-            element={
-              <>
-                <SignedIn>
-                  <PatientDashboard />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+					{/* Example extra pages */}
+					<Route path="/welcome" element={<Welcome />} />
+					<Route
+						path="/healthcareworker"
+						element={
+							<>
+								<SignedIn>
+									<HealthcareWorker />
+								</SignedIn>
+								<SignedOut>
+									<RedirectToSignIn />
+								</SignedOut>
+							</>
+						}
+					/>
+					<Route
+						path="/emergency"
+						element={
+							<>
+								<SignedIn>
+									<Emergency />
+								</SignedIn>
+								<SignedOut>
+									<RedirectToSignIn />
+								</SignedOut>
+							</>
+						}
+					/>
+					<Route
+						path="/patient"
+						element={
+							<>
+								<SignedIn>
+									<PatientDashboard />
+								</SignedIn>
+								<SignedOut>
+									<RedirectToSignIn />
+								</SignedOut>
+							</>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
 }
 
 export default App;
-
