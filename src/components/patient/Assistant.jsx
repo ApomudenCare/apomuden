@@ -10,10 +10,9 @@ const Assistant = () => {
 	const [displayText, setDisplayText] = useState("What is your name");
 	const [language, setLanguage] = useState("en");
 	const [isTranslating, setIsTranslating] = useState(false);
-	const [userInput, setUserInput] = useState(""); // New: Store textarea input
-	const [originalText, setOriginalText] = useState("What is your name"); // New: Store the original English text
+	const [userInput, setUserInput] = useState("");
+	const [originalText, setOriginalText] = useState("What is your name");
 
-	// Initial translation when language changes
 	useEffect(() => {
 		const runTranslation = async () => {
 			if (language === "en") {
@@ -31,26 +30,19 @@ const Assistant = () => {
 				}
 			}
 		};
-
 		runTranslation();
-	}, [language, originalText]); // Added originalText as dependency
+	}, [language, originalText]);
 
-	// Handle language change from dropdown
 	const handleLanguageChange = (selectedLang) => {
-		console.log("Selected language from dropdown:", selectedLang);
 		setLanguage(selectedLang.code);
 	};
 
-	// New: Handle form submission
 	const handleSubmit = async (e) => {
-		e.preventDefault(); // Prevent page reload
+		e.preventDefault();
+		if (!userInput.trim()) return;
 
-		if (!userInput.trim()) return; // Don't submit empty messages
-
-		// Update the original text with user input
 		setOriginalText(userInput);
 
-		// Translate immediately if not English
 		if (language === "en") {
 			setDisplayText(userInput);
 		} else {
@@ -66,20 +58,19 @@ const Assistant = () => {
 			}
 		}
 
-		// Clear the input field
 		setUserInput("");
 	};
 
-	// New: Handle textarea change
 	const handleInputChange = (e) => {
 		setUserInput(e.target.value);
 	};
 
 	return (
-		<section className="border border-gray-300 rounded-md p-5">
-			<div className="flex justify-between items-center">
+		<section className="border border-gray-300 rounded-md p-4 md:p-6 lg:p-8">
+			{/* Header */}
+			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div>
-					<h1 className="text-2xl font-semibold">Chat with Apomuden Assistant</h1>
+					<h1 className="text-xl md:text-2xl font-semibold">Chat with Apomuden Assistant</h1>
 					<p className="text-gray-500 text-sm">
 						Describe your symptoms or ask questions about your health
 					</p>
@@ -89,52 +80,59 @@ const Assistant = () => {
 				</div>
 			</div>
 
-			{/* chat bot area */}
-			<div className="ring-1 ring-gray-200 rounded-md mt-5 pb-[10%] pt-5 px-5 mb-10 space-y-6">
-				<div className="flex gap-x-4 items-center">
+			{/* Chat area */}
+			<div className="ring-1 ring-gray-200 rounded-md mt-6 mb-8 p-4 md:p-6 space-y-4 min-h-[120px]">
+				<div className="flex items-start gap-x-4">
 					<div className="w-10 h-10 bg-gray-200 rounded-full flex justify-center items-center">
-						<p></p>
+						<p className="font-bold text-lg text-gray-600">A</p>
 					</div>
-
 					<div className="flex-1 space-y-3">
-						<p className="bg-[#f4f4f5] text-zinc-700 p-3 rounded-md w-md">
+						<p className="bg-gray-100 text-gray-800 p-3 rounded-md break-words">
 							{isTranslating ? "Translating..." : displayText}
 						</p>
-						<div className="flex gap-x-2 items-center">
-							<p className="text-gray-400 text-sm">Current language: {language}</p>
-							<GiSpeaker size={20} />
+						<div className="flex items-center gap-x-2 text-gray-400 text-sm">
+							<p>Language: {language}</p>
+							<GiSpeaker size={18} />
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Interactive text message area */}
-			<form onSubmit={handleSubmit} className="flex gap-x-5">
+			{/* Message input area */}
+			<form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4">
 				<textarea
 					value={userInput}
 					onChange={handleInputChange}
 					placeholder="Type your message here..."
-					className="w-full border border-gray-300 rounded-md p-4 flex-1 outline-none resize-none"
+					className="w-full border border-gray-300 rounded-md p-3 resize-none outline-none min-h-[100px]"
 					rows="3"
 				/>
 
-				<div className="w-12 flex flex-col space-y-3">
-					<div className="p-3 flex justify-center items-center rounded-md cursor-pointer">
-						<CiMicrophoneOn size={25} />
-					</div>
-					<div className="bg-[#f4f4f5] p-3 flex justify-center items-center rounded-md">
+				<div className="flex md:flex-col gap-3 justify-between md:justify-start">
+					<button
+						type="button"
+						className="p-3 bg-gray-100 hover:bg-gray-200 rounded-md flex justify-center items-center"
+					>
+						<CiMicrophoneOn size={22} />
+					</button>
+
+					<button
+						type="button"
+						className="p-3 bg-gray-100 hover:bg-gray-200 rounded-md flex justify-center items-center"
+					>
 						<GiSpeaker size={20} />
-					</div>
+					</button>
+
 					<button
 						type="submit"
 						disabled={!userInput.trim() || isTranslating}
-						className={`p-3 flex justify-center items-center rounded-md cursor-pointer ${
+						className={`p-3 rounded-md flex justify-center items-center transition-colors ${
 							!userInput.trim() || isTranslating
 								? "bg-gray-300 cursor-not-allowed"
-								: "bg-[#86dbbf] hover:bg-[#8dc9b5] text-white"
+								: "bg-green-400 hover:bg-green-500 text-white"
 						}`}
 					>
-						<FaRegPaperPlane size={20} />
+						<FaRegPaperPlane size={18} />
 					</button>
 				</div>
 			</form>

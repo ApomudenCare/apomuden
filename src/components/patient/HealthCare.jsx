@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import healthworker from "../../jsfiles/healthworker";
 import { CiMicrophoneOn, CiSpeaker } from "react-icons/ci";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { GiSpeaker } from "react-icons/gi";
+import { FiMenu, FiX, FiChevronLeft } from "react-icons/fi";
 
 const HealthCare = () => {
 	// State management
-	const [selectedWorker, setSelectedWorker] = useState(healthworker[0]); // Default to first worker
+	const [selectedWorker, setSelectedWorker] = useState(healthworker[0]);
 	const [messages, setMessages] = useState({
-		// Initialize with sample messages for each worker
 		[healthworker[0].id]: [
 			{
 				id: 1,
@@ -27,6 +27,9 @@ const HealthCare = () => {
 	});
 	const [currentMessage, setCurrentMessage] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	const [showSidebar, setShowSidebar] = useState(true);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 	// Fake response templates
 	const fakeResponses = [
@@ -39,6 +42,21 @@ const HealthCare = () => {
 		"That sounds concerning. Please make sure to get enough rest and stay hydrated.",
 		"I appreciate you reaching out. Let's discuss some treatment options.",
 	];
+
+	// Handle window resize
+	useEffect(() => {
+		const handleResize = () => {
+			const width = window.innerWidth;
+			setWindowWidth(width);
+			setIsMobile(width < 768);
+			if (width >= 768) {
+				setShowSidebar(true);
+			}
+		};
+
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	// Utility functions
 	const statusdot = (status) => {
@@ -66,7 +84,6 @@ const HealthCare = () => {
 	// Handle worker selection
 	const handleWorkerSelect = (worker) => {
 		setSelectedWorker(worker);
-		// Initialize messages for this worker if they don't exist
 		if (!messages[worker.id]) {
 			setMessages((prev) => ({
 				...prev,
@@ -79,6 +96,9 @@ const HealthCare = () => {
 					},
 				],
 			}));
+		}
+		if (isMobile) {
+			setShowSidebar(false);
 		}
 	};
 
@@ -95,7 +115,6 @@ const HealthCare = () => {
 			timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
 		};
 
-		// Add user message
 		setMessages((prev) => ({
 			...prev,
 			[selectedWorker.id]: [...(prev[selectedWorker.id] || []), newUserMessage],
@@ -104,7 +123,6 @@ const HealthCare = () => {
 		setCurrentMessage("");
 		setIsTyping(true);
 
-		// Simulate typing delay and send fake response
 		setTimeout(() => {
 			const randomResponse = fakeResponses[Math.floor(Math.random() * fakeResponses.length)];
 			const newWorkerMessage = {
@@ -119,22 +137,52 @@ const HealthCare = () => {
 				[selectedWorker.id]: [...(prev[selectedWorker.id] || []), newWorkerMessage],
 			}));
 			setIsTyping(false);
-		}, 1500 + Math.random() * 2000); // Random delay between 1.5-3.5 seconds
+		}, 1500 + Math.random() * 2000);
 	};
 
 	const currentMessages = messages[selectedWorker.id] || [];
 
 	return (
 		<section className="border border-gray-200 rounded-md overflow-hidden h-[600px] flex flex-col">
+			{/* Header */}
 			<div className="px-4 py-2 border-b border-gray-200">
-				<h1 className="text-2xl font-semibold rounded-md">Chat with HealthCare Workers</h1>
+				<div className="flex items-center justify-between">
+					{isMobile && !showSidebar && (
+						<button
+							onClick={() => setShowSidebar(true)}
+							className="p-1 rounded-md hover:bg-gray-100"
+						>
+							<FiChevronLeft size={24} />
+						</button>
+					)}
+					<h1 className="text-2xl font-semibold rounded-md">
+						{isMobile && !showSidebar
+							? `Chat with ${selectedWorker.name}`
+							: "Chat with HealthCare Workers"}
+					</h1>
+					{isMobile && showSidebar && (
+						<button
+							onClick={() => setShowSidebar(false)}
+							className="p-1 rounded-md hover:bg-gray-100 md:hidden"
+						>
+							<FiX size={24} />
+						</button>
+					)}
+				</div>
 				<p className="text-sm text-gray-500 mb-2">
-					Direct communication with doctors and healthcare professionals
+					{isMobile && !showSidebar
+						? selectedWorker.role
+						: "Direct communication with doctors and healthcare professionals"}
 				</p>
 			</div>
 
-			<main className="flex flex-1 overflow-hidden">
-				<aside className="w-1/3 border-r border-gray-200 overflow-y-auto">
+			<main className="flex flex-1 overflow-hidden relative">
+				{/* Sidebar */}
+				<aside
+					className={`w-full md:w-1/3 border-r border-gray-200 overflow-y-auto bg-white absolute md:relative z-10 h-full transition-transform duration-300 ${
+						showSidebar ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+					}`}
+				>
 					<div className="border-b border-gray-200 px-4 py-2">
 						<h1 className="text-lg font-semibold">HealthCare Workers</h1>
 						<p className="text-sm text-gray-500">Select a healthworker to chat with</p>
@@ -173,9 +221,21 @@ const HealthCare = () => {
 				</aside>
 
 				{/* Chat section */}
-				<section className="flex-1 flex flex-col">
+				<section
+					className={`flex-1 flex flex-col h-full ${
+						!showSidebar || !isMobile ? "block" : "hidden"
+					}`}
+				>
 					{/* Chat header */}
 					<div className="flex gap-3 p-4 border-b border-gray-300 bg-white">
+						{isMobile && (
+							<button
+								onClick={() => setShowSidebar(true)}
+								className="p-1 rounded-md hover:bg-gray-100 mr-2"
+							>
+								<FiMenu size={24} />
+							</button>
+						)}
 						<div className="relative">
 							<div className="bg-gray-400 w-10 h-10 rounded-full flex justify-center items-center text-white font-medium">
 								{selectedWorker.initials}
@@ -229,7 +289,7 @@ const HealthCare = () => {
 										</div>
 									)}
 									<div
-										className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg ${
+										className={`max-w-[80%] sm:max-w-xs lg:max-w-md px-3 py-2 rounded-lg ${
 											message.sender === "user"
 												? "bg-blue-500 text-white"
 												: "bg-white border border-gray-200"
@@ -291,7 +351,7 @@ const HealthCare = () => {
 									}}
 									placeholder={`Type your message to ${selectedWorker.name}...`}
 									className="w-full border border-gray-300 rounded-md py-3 px-4 outline-none resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-									rows="2"
+									rows={windowWidth < 400 ? "1" : "2"}
 									disabled={selectedWorker.status === "offline"}
 								/>
 								{selectedWorker.status === "offline" && (

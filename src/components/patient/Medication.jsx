@@ -21,9 +21,10 @@ const Medication = () => {
 			dosage: "500mg every 6 to 8 hours. Maximum 4g per day.",
 			instructions: "Take with water. Avoid alcohol.",
 			side_effects: "Rare side effects include rash and liver damage with overdose.",
-			warnings: "Do not exceed the recommended dosage. Consult a doctor if you have liver problems.",
+			warnings:
+				"Do not exceed the recommended dosage. Consult a doctor if you have liver problems.",
 			generic_name: "Acetaminophen",
-			brand_names: "Tylenol, Panadol, Calpol"
+			brand_names: "Tylenol, Panadol, Calpol",
 		},
 		ibuprofen: {
 			name: "Ibuprofen",
@@ -33,7 +34,7 @@ const Medication = () => {
 			side_effects: "May cause stomach upset, dizziness, or headache.",
 			warnings: "Avoid if you have stomach ulcers or kidney problems.",
 			generic_name: "Ibuprofen",
-			brand_names: "Advil, Motrin, Nurofen"
+			brand_names: "Advil, Motrin, Nurofen",
 		},
 		amoxicillin: {
 			name: "Amoxicillin",
@@ -43,7 +44,7 @@ const Medication = () => {
 			side_effects: "May cause nausea, diarrhea, or allergic reactions.",
 			warnings: "Tell your doctor if you're allergic to penicillin.",
 			generic_name: "Amoxicillin",
-			brand_names: "Amoxil, Trimox"
+			brand_names: "Amoxil, Trimox",
 		},
 		aspirin: {
 			name: "Aspirin",
@@ -53,14 +54,14 @@ const Medication = () => {
 			side_effects: "May cause stomach bleeding, ringing in ears.",
 			warnings: "Not suitable for children under 16. Avoid if you have bleeding disorders.",
 			generic_name: "Acetylsalicylic Acid",
-			brand_names: "Bayer, Disprin"
-		}
+			brand_names: "Bayer, Disprin",
+		},
 	};
 
 	// Handle language change from dropdown
 	const handleLanguageChange = async (selectedLang) => {
 		setLanguage(selectedLang.code);
-		
+
 		// Re-translate current medication info if it exists
 		if (medicationInfo && selectedLang.code !== "en") {
 			setIsTranslating(true);
@@ -84,7 +85,7 @@ const Medication = () => {
 	// Translate medication information
 	const translateMedicationInfo = async (medInfo, targetLang) => {
 		const translatedInfo = { ...medInfo };
-		
+
 		try {
 			translatedInfo.uses = await translateText(medInfo.uses, targetLang);
 			translatedInfo.dosage = await translateText(medInfo.dosage, targetLang);
@@ -94,25 +95,25 @@ const Medication = () => {
 		} catch (error) {
 			console.error("Translation error:", error);
 		}
-		
+
 		return translatedInfo;
 	};
 
 	// Handle search
 	const handleSearch = async (e) => {
 		e.preventDefault();
-		
+
 		if (!searchQuery.trim()) return;
-		
+
 		setIsSearching(true);
-		
+
 		// Simulate API delay
 		setTimeout(async () => {
 			const medication = medicationDatabase[searchQuery.toLowerCase()];
-			
+
 			if (medication) {
 				let finalMedInfo = medication;
-				
+
 				// Translate if not English
 				if (language !== "en") {
 					setIsTranslating(true);
@@ -125,16 +126,17 @@ const Medication = () => {
 						setIsTranslating(false);
 					}
 				}
-				
+
 				setMedicationInfo(finalMedInfo);
 			} else {
 				// Show "not found" message
 				const notFoundMsg = {
 					name: searchQuery,
-					error: "Medication not found in database. Please check the spelling or try another medication.",
-					suggestion: "Available medications: Paracetamol, Ibuprofen, Amoxicillin, Aspirin"
+					error:
+						"Medication not found in database. Please check the spelling or try another medication.",
+					suggestion: "Available medications: Paracetamol, Ibuprofen, Amoxicillin, Aspirin",
 				};
-				
+
 				if (language !== "en") {
 					setIsTranslating(true);
 					try {
@@ -146,21 +148,21 @@ const Medication = () => {
 						setIsTranslating(false);
 					}
 				}
-				
+
 				setMedicationInfo(notFoundMsg);
 			}
-			
+
 			setIsSearching(false);
 		}, 1000 + Math.random() * 1000); // 1-2 second delay
 	};
 
 	return (
-		<div className="max-w-4xl mx-auto">
-			<section className="border border-gray-300 rounded-lg p-6 bg-white shadow-sm">
+		<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+			<section className="border border-gray-300 rounded-lg p-4 sm:p-6 bg-white shadow-sm">
 				{/* Header */}
-				<div className="flex justify-between items-start mb-6">
+				<div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
 					<div>
-						<h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+						<h1 className="text-2xl sm:text-3xl font-bold text-gray-800 flex items-center gap-2">
 							<FaPills className="text-blue-500" />
 							Medication Information
 						</h1>
@@ -168,14 +170,14 @@ const Medication = () => {
 							Get comprehensive information about your medications and prescriptions
 						</p>
 					</div>
-					<div>
+					<div className="w-full sm:w-auto">
 						<Dropdown onLanguagechange={handleLanguageChange} />
 					</div>
 				</div>
 
 				{/* Search Section */}
 				<form onSubmit={handleSearch} className="mb-6">
-					<div className="flex gap-3 items-center">
+					<div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
 						<div className="flex-1 relative">
 							<FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
 							<input
@@ -183,34 +185,36 @@ const Medication = () => {
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Enter medication name (e.g., Paracetamol, Ibuprofen)..."
-								className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+								className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 							/>
 						</div>
-						<button
-							type="button"
-							className="bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition-colors"
-							title="Scan Barcode"
-						>
-							<BiBarcode size={20} />
-						</button>
-						<button
-							type="submit"
-							disabled={!searchQuery.trim() || isSearching}
-							className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-								!searchQuery.trim() || isSearching
-									? 'bg-gray-300 cursor-not-allowed text-gray-500'
-									: 'bg-blue-500 hover:bg-blue-600 text-white'
-							}`}
-						>
-							{isSearching ? 'Searching...' : 'Search'}
-						</button>
+						<div className="flex gap-3">
+							<button
+								type="button"
+								className="bg-gray-100 hover:bg-gray-200 p-2 sm:p-3 rounded-lg transition-colors flex-shrink-0"
+								title="Scan Barcode"
+							>
+								<BiBarcode size={20} />
+							</button>
+							<button
+								type="submit"
+								disabled={!searchQuery.trim() || isSearching}
+								className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-colors flex-1 ${
+									!searchQuery.trim() || isSearching
+										? "bg-gray-300 cursor-not-allowed text-gray-500"
+										: "bg-blue-500 hover:bg-blue-600 text-white"
+								}`}
+							>
+								{isSearching ? "Searching..." : "Search"}
+							</button>
+						</div>
 					</div>
 				</form>
 
 				{/* Results Section */}
-				<div className="min-h-[400px]">
+				<div className="min-h-[300px] sm:min-h-[400px]">
 					{!medicationInfo && !isSearching && (
-						<div className="text-center py-16 text-gray-500">
+						<div className="text-center py-8 sm:py-16 text-gray-500">
 							<FaPills size={48} className="mx-auto mb-4 text-gray-300" />
 							<h3 className="text-lg font-medium mb-2">Search for Medication Information</h3>
 							<p className="text-sm">Enter a medication name above to get detailed information</p>
@@ -228,44 +232,56 @@ const Medication = () => {
 					)}
 
 					{medicationInfo && medicationInfo.error ? (
-						<div className="bg-red-50 border border-red-200 rounded-lg p-6">
+						<div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-6">
 							<div className="flex items-center mb-3">
 								<div className="bg-red-500 text-white rounded-full p-2 mr-3">
 									<FaPills size={16} />
 								</div>
 								<h3 className="text-lg font-semibold text-red-800">Medication Not Found</h3>
 							</div>
-							<p className="text-red-700 mb-3">{isTranslating ? "Translating..." : medicationInfo.error}</p>
-							<p className="text-red-600 text-sm">{isTranslating ? "Translating..." : medicationInfo.suggestion}</p>
+							<p className="text-red-700 mb-3">
+								{isTranslating ? "Translating..." : medicationInfo.error}
+							</p>
+							<p className="text-red-600 text-sm">
+								{isTranslating ? "Translating..." : medicationInfo.suggestion}
+							</p>
 						</div>
 					) : medicationInfo && !medicationInfo.error ? (
-						<div className="bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
+						<div className="bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200 rounded-lg p-4 sm:p-6">
 							{isTranslating && (
 								<div className="bg-yellow-100 border border-yellow-200 rounded-md p-3 mb-4">
-									<p className="text-yellow-800 text-sm">🔄 Translating medication information...</p>
+									<p className="text-yellow-800 text-sm">
+										🔄 Translating medication information...
+									</p>
 								</div>
 							)}
-							
+
 							{/* Medication Header */}
-							<div className="flex items-center mb-6">
-								<div className="bg-blue-500 text-white rounded-full p-3 mr-4">
+							<div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-4">
+								<div className="bg-blue-500 text-white rounded-full p-3 mr-0 sm:mr-4">
 									<FaPills size={24} />
 								</div>
 								<div>
-									<h2 className="text-2xl font-bold text-gray-800">{medicationInfo.name}</h2>
+									<h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+										{medicationInfo.name}
+									</h2>
 									{medicationInfo.generic_name && (
-										<p className="text-gray-600">Generic: {medicationInfo.generic_name}</p>
+										<p className="text-gray-600 text-sm sm:text-base">
+											Generic: {medicationInfo.generic_name}
+										</p>
 									)}
 									{medicationInfo.brand_names && (
-										<p className="text-gray-500 text-sm">Brands: {medicationInfo.brand_names}</p>
+										<p className="text-gray-500 text-xs sm:text-sm">
+											Brands: {medicationInfo.brand_names}
+										</p>
 									)}
 								</div>
 							</div>
 
 							{/* Information Grid */}
-							<div className="grid md:grid-cols-2 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
 								<div className="space-y-4">
-									<div className="bg-white rounded-lg p-4 border border-gray-200">
+									<div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200">
 										<h3 className="font-semibold text-green-700 mb-2 flex items-center">
 											<span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
 											Uses
@@ -273,7 +289,7 @@ const Medication = () => {
 										<p className="text-gray-700 text-sm leading-relaxed">{medicationInfo.uses}</p>
 									</div>
 
-									<div className="bg-white rounded-lg p-4 border border-gray-200">
+									<div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200">
 										<h3 className="font-semibold text-blue-700 mb-2 flex items-center">
 											<span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
 											Dosage
@@ -281,46 +297,52 @@ const Medication = () => {
 										<p className="text-gray-700 text-sm leading-relaxed">{medicationInfo.dosage}</p>
 									</div>
 
-									<div className="bg-white rounded-lg p-4 border border-gray-200">
+									<div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200">
 										<h3 className="font-semibold text-purple-700 mb-2 flex items-center">
 											<span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
 											Instructions
 										</h3>
-										<p className="text-gray-700 text-sm leading-relaxed">{medicationInfo.instructions}</p>
+										<p className="text-gray-700 text-sm leading-relaxed">
+											{medicationInfo.instructions}
+										</p>
 									</div>
 								</div>
 
 								<div className="space-y-4">
-									<div className="bg-white rounded-lg p-4 border border-orange-200">
+									<div className="bg-white rounded-lg p-3 sm:p-4 border border-orange-200">
 										<h3 className="font-semibold text-orange-700 mb-2 flex items-center">
 											<span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
 											Side Effects
 										</h3>
-										<p className="text-gray-700 text-sm leading-relaxed">{medicationInfo.side_effects}</p>
+										<p className="text-gray-700 text-sm leading-relaxed">
+											{medicationInfo.side_effects}
+										</p>
 									</div>
 
-									<div className="bg-white rounded-lg p-4 border border-red-200">
+									<div className="bg-white rounded-lg p-3 sm:p-4 border border-red-200">
 										<h3 className="font-semibold text-red-700 mb-2 flex items-center">
 											<span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
 											⚠️ Warnings
 										</h3>
-										<p className="text-gray-700 text-sm leading-relaxed">{medicationInfo.warnings}</p>
+										<p className="text-gray-700 text-sm leading-relaxed">
+											{medicationInfo.warnings}
+										</p>
 									</div>
 
-									<div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+									<div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
 										<p className="text-yellow-800 text-xs">
-											<strong>Disclaimer:</strong> This information is for educational purposes only. 
-											Always consult with a healthcare professional before taking any medication.
+											<strong>Disclaimer:</strong> This information is for educational purposes
+											only. Always consult with a healthcare professional before taking any
+											medication.
 										</p>
 									</div>
 								</div>
 							</div>
 						</div>
-					): null}
+					) : null}
 				</div>
 			</section>
 		</div>
-				
 	);
 };
 
