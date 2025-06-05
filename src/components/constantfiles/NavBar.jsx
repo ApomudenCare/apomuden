@@ -5,7 +5,7 @@ import { CiGlobe } from "react-icons/ci";
 import { TiWeatherSunny } from "react-icons/ti";
 // import Dropdown from "../Dropdown";
 import Mode from "../Mode";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { Menu, X } from "lucide-react";
 
 const NavBar = () => {
@@ -55,14 +55,14 @@ const NavBar = () => {
 						</div> */}
 						
 						{/* Mode Toggle */}
-						<div className="flex items-center border border-gray-300 px-2 py-1 rounded-md">
+						{/* <div className="flex items-center border border-gray-300 px-2 py-1 rounded-md">
 							<Mode />
-						</div>
+						</div> */}
 						
 						{/* Emergency Button - responsive sizing */}
-						<button className="bg-[#ef5257] hover:bg-[#d44449] text-white px-2 py-1 xl:px-3 xl:py-2 rounded-md text-sm xl:text-base transition-colors duration-200">
+						<Link to='/emergency' className="bg-[#ef5257] hover:bg-[#d44449] text-white px-2 py-1 xl:px-3 xl:py-2 rounded-md text-sm xl:text-base transition-colors duration-200">
 							Emergency
-						</button>
+						</Link >
 						
 						{/* User Initial */}
 						<div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium">
@@ -120,14 +120,14 @@ const NavBar = () => {
 						</div> */}
 						
 						{/* Mode Toggle */}
-						<div className="flex items-center border border-gray-300 px-3 py-2 rounded-md w-fit">
+						{/* <div className="flex items-center border border-gray-300 px-3 py-2 rounded-md w-fit">
 							<Mode />
-						</div>
+						</div> */}
 						
 						{/* Emergency Button */}
-						<button className="bg-[#ef5257] hover:bg-[#d44449] text-white px-4 py-3 rounded-md w-full text-base font-medium transition-colors duration-200">
+						<Link to='/emergency' className="bg-[#ef5257] hover:bg-[#d44449] text-white px-4 py-3 rounded-md w-full text-base font-medium transition-colors duration-200">
 							Emergency
-						</button>
+						</Link>
 						
 						{/* User Section */}
 						<div className="flex items-center gap-3 pt-2">
