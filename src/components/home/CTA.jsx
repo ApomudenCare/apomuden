@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router";
 
 const CTA = () => {
 	return (
@@ -17,12 +18,12 @@ const CTA = () => {
 				
 				{/* Buttons */}
 				<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-					<button className="bg-[#3f9669] hover:bg-[#2d7a56] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-md font-medium transition-colors duration-200 text-sm sm:text-base shadow-md hover:shadow-lg">
+					<Link to='/patient' className="bg-[#3f9669] hover:bg-[#2d7a56] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-md font-medium transition-colors duration-200 text-sm sm:text-base shadow-md hover:shadow-lg">
 						Patient Interface
-					</button>
-					<button className="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-md font-medium transition-all duration-200 text-sm sm:text-base shadow-md hover:shadow-lg">
+					</Link >
+					<Link to='/healthcareworker'className="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 px-6 sm:px-8 py-3 sm:py-4 rounded-md font-medium transition-all duration-200 text-sm sm:text-base shadow-md hover:shadow-lg">
 						Healthcare Worker
-					</button>
+					</Link>
 				</div>
 			</div>
 		</section>
